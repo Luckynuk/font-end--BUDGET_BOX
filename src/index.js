@@ -1,25 +1,25 @@
 import React from 'react';
-import Router from './Router';
-import './App.css';
-import { BrowserRouter } from 'react-router-dom';
-import { LayoutProvider } from 'react-page-layout';
-import DefaultLayout from './components/default/DefaultLayout';
-import PublicDefaultLayout from './components/default/PublicDefaultLayout';
+import ReactDOM from 'react-dom';
+import createStore from './reducks/store/store';
+import App from './App';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import reportWebVitals from './reportWebVitals';
+import * as History from 'history';
 
-const layouts = {
-	'public': PublicDefaultLayout,
-	'default': DefaultLayout
-}; 
+const history = History.createBrowserHistory();
+export const store = createStore(history);
 
-function App() {
-  return (
-		<LayoutProvider layouts={layouts}>
-			<BrowserRouter>
-				<Router />
-			</BrowserRouter>
-		</LayoutProvider>
-	);
-}
+ReactDOM.render(
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
+  </Provider>,
+  document.getElementById('root')
+);
 
-
-export default App;
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
